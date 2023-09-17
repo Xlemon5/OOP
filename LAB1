@@ -1,0 +1,82 @@
+#include <iostream>
+#include <cmath>
+
+class Angle {
+private:
+    int degrees;
+    int minutes;
+
+    void normalize() {
+        while (degrees >= 360) {
+            degrees -= 360;
+        }
+        while (degrees < 0) {
+            degrees += 360;
+        }
+    }
+
+public:
+    Angle(int deg, int min) : degrees(deg), minutes(min) {
+        normalize();
+    }
+
+    double toRadians() {
+        double totalDegrees = degrees + static_cast<double>(minutes) / 60.0;
+        return totalDegrees * M_PI / 180.0;
+    }
+
+    void increase(int deg, int min) {
+        degrees += deg;
+        minutes += min;
+        normalize();
+    }
+
+    void decrease(int deg, int min) {
+        degrees -= deg;
+        minutes -= min;
+        normalize();
+    }
+
+    double getSin() {
+        double radians = toRadians();
+        return std::sin(radians);
+    }
+
+    bool operator==(const Angle& other) const {
+        return degrees == other.degrees && minutes == other.minutes;
+    }
+
+    bool operator<(const Angle& other) const {
+        return toRadians() < other.toRadians();
+    }
+
+    bool operator<=(const Angle& other) const {
+        return toRadians() <= other.toRadians();
+    }
+
+    bool operator>(const Angle& other) const {
+        return toRadians() > other.toRadians();
+    }
+
+    bool operator>=(const Angle& other) const {
+        return toRadians() >= other.toRadians();
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const Angle& angle) {
+        os << angle.degrees << " degrees " << angle.minutes << " minutes";
+        return os;
+    }
+};
+
+int main() {
+    Angle angle1(45, 30);
+    Angle angle2(180, 15);
+
+    std::cout << "Angle 1: " << angle1 << std::endl;
+    std::cout << "Angle 2: " << angle2 << std::endl;
+
+    std::cout << "Sin of Angle 1: " << angle1.getSin() << std::endl;
+    std::cout << "Sin of Angle 2: " << angle2.getSin() << std::endl;
+
+    return 0;
+}
