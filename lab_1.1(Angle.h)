@@ -1,0 +1,66 @@
+#ifndef Angle_H
+#define Angle_H
+#include <string>
+
+class Angle
+{
+private:
+	int degrees;
+	int minutes;
+
+	void normalize();
+
+public:
+
+	// конструкторы
+	Angle();
+
+	Angle(int degr, int minut);
+
+
+	//Методы доступа
+	//SETTER
+
+	void setDegrees(int degr);
+
+
+	void setMinutes(int minut);
+
+
+	//GETTER
+	int getDegrees();
+
+	int getMinutes();
+
+
+
+
+
+	// МЕТОДЫ ПО ЗАДАНИЮ
+	double toRadians();
+
+	double toRadians(int degr, int minut);
+
+
+	double toDegrees(double radians);
+
+
+
+
+	void increase(int degr, int minut);
+
+
+	void decrease(int degr, int minut);
+
+
+	double getSin();
+
+
+	int compareAngle(Angle& other);
+
+
+	//ОБЪЕКТ В ВИДЕ СТРОКИ
+	std::string toString();
+};
+
+#endif
