@@ -1,0 +1,42 @@
+#include <iostream>
+#include "Angle.h"
+using namespace std;
+
+
+
+int main() 
+{
+	setlocale(LC_ALL, "Russian");
+
+	Angle angle1(38, 50);
+	Angle angle2(50, 38);
+	Angle angle3(180, 15);
+
+
+	angle1.decrease(3, 50);
+	angle2.increase(50, 32);
+	angle3.increase(20, 38);
+
+	cout << "Angle1 in radians: " << angle1.toRadians() << endl;
+	cout << "Angle1: " << angle1.toString() << endl;
+
+	cout << endl;
+	cout << "Angle2: " << angle2.toString() << endl;
+	cout << "Angle2: " << angle3.toString() << endl;
+
+	cout << endl;
+
+
+	int result = angle3.compareAngle(angle2);
+	if (result < 0) {
+		cout << "Angle 3 is less than Angle 2" << endl;
+	}
+	else if (result > 0) {
+		cout << "Angle 3 is greater than Angle 2" << endl;
+	}
+	else {
+		cout << "Angle 3 is equal to Angle 2" << endl;
+	}
+
+	return 0;
+}
