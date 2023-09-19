@@ -1,0 +1,60 @@
+#ifndef OOP_C___FUNCTION_H
+#define OOP_C___FUNCTION_H
+#include <string>
+
+
+class Angle
+{
+private:
+    int degrees;
+    int minutes;
+
+
+    //ПЕРЕДЕЛАТЬ
+
+
+public:
+
+    // КОНСТРУКТОРЫ
+    Angle();
+
+    Angle(int degr, int minut);
+
+    void toMinute();
+
+    void toDegrees();
+
+    void normalize();
+
+    //SETTER
+    void setDegrees(int degr);
+
+    void setMinutes(int minut);
+
+    //GETTER
+    int getDegrees();
+
+    int getMinutes();
+
+
+
+    // МЕТОДЫ ПО ЗАДАНИЮ
+    double toRadians();
+
+    double toRadians(Angle &other);
+
+    void increase(Angle &other);
+
+    void decrease(Angle &other);
+
+    double getSin();
+
+    int compareAngle(Angle &other);
+
+    std::string toString();
+};
+
+
+
+
+#endif //OOP_C___FUNCTION_H
