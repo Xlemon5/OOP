@@ -1,0 +1,163 @@
+#include <iostream>
+#include "function.h"
+#include <cmath>
+using namespace std;
+
+// конструкторы
+Angle::Angle(): degrees(0), minutes(0){}
+
+Angle::Angle(int degr, int minut) : degrees(degr), minutes(minut)
+{
+    //normalize();
+}
+
+//SETTER
+void Angle::setDegrees(int degr)
+{
+    degrees = degr;
+}
+
+void Angle::setMinutes(int minut)
+{
+    minutes = minut;
+}
+
+//GETTER
+int Angle::getDegrees()
+{
+    return degrees;
+}
+
+int Angle::getMinutes()
+{
+    return minutes;
+}
+
+void Angle::toMinute()
+{
+
+    /*
+     если угол отрицательный, то при degrees * 60 + minutes получался неправильный угол
+    так как градусы превращались в отрицательные минуты и складывались с оставшимися положительными минутами
+     */
+
+     if(degrees < 0)
+    {
+        minutes = -(abs(degrees * 60) + minutes);
+        degrees = 0;
+    }
+    else
+    {
+        minutes = degrees * 60 + minutes;
+        degrees = 0;
+    }
+}
+
+void Angle::toDegrees()
+{
+    degrees = minutes / 60;
+    minutes = minutes % 60;
+}
+
+void Angle::normalize()
+{
+    const int twoPiMinutes = 21600;
+
+    this->toMinute();
+    if(minutes > twoPiMinutes)
+    {
+        minutes = minutes % twoPiMinutes;
+        this->toDegrees();
+    }
+    else if (minutes < 0)
+    {
+        while(minutes < 0)
+        {
+            minutes += twoPiMinutes;
+        }
+        this->toDegrees();
+    }
+    else
+    {
+        toDegrees();
+    }
+}
+
+
+// МЕТОДЫ ПО ЗАДАНИЮ
+double Angle::toRadians()
+{
+    double totalDegrees = degrees + static_cast<double>(minutes) / 60.0;
+    return totalDegrees * M_PI / 180.0;
+}
+
+
+double Angle::toRadians(Angle &other)
+{
+    double totalDegrees = other.degrees + static_cast<double>(other.minutes) / 60.0;
+    return totalDegrees * M_PI / 180.0;
+}
+
+
+void Angle::increase(Angle &other)
+{
+    this->toMinute();
+    other.toMinute();
+    minutes += other.minutes;
+
+    this->toDegrees();
+    other.toDegrees();
+
+    //this->normalize();
+    //other.normalize();
+}
+
+void Angle::decrease(Angle &other)
+{
+    this->toMinute();
+    other.toMinute();
+    minutes -= other.minutes;
+
+    this->toDegrees();
+    other.toDegrees();
+
+    //this->normalize();
+    //other.normalize();
+
+}
+
+
+double Angle::getSin()
+{
+    double radians = this->toRadians();
+    return sin(radians);
+}
+
+
+int Angle::compareAngle(Angle &other)
+{
+    this->toMinute();
+    other.toMinute();
+
+    if (minutes > other.minutes)
+    {
+        return 1;
+    }
+    else if (minutes < other.minutes)
+    {
+        return -1;
+    }
+    else
+    {
+        return 0;
+    }
+        this->toDegrees();
+        other.toDegrees();
+}
+
+
+std::string Angle::toString(){
+    string temp = "Degrees " + to_string(degrees) + " " + "Minutes " + to_string(minutes);
+    return temp;
+}
+
