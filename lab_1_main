@@ -1,0 +1,62 @@
+#include <iostream>
+#define _USE_MATH_DEFINES
+#include <math.h>
+#include <string>
+#include "function.h"
+
+using namespace std;
+
+
+/*
+    ПЕРЕДЕЛАТЬ
+
+    **DONE**  ПЕРЕВОДИТЬ ВСЕ В МИНУТЫ
+
+    **DONE**  1) УВЕЛИЧЕНИЕ/УМЕНЬШЕНИЕ: ПЕРЕДАВАТЬ КЛАСС В МЕТОД
+    **DONE**  2) ПЕРЕДЕЛАТЬ ФУНКЦИЮ НОРМАЛИЗАЦИИ    (УЧЕСТЬ ВОЗМОЖНОСТЬ ОТРИЦАТЕЛЬНЫХ УГЛОВ    **DONE**)
+
+ */
+
+
+int main()
+{
+    setlocale(LC_ALL, "Russian");
+
+    Angle angle1(30, 50);
+
+    Angle angle2(50, 32);
+
+    Angle angle3(-77, 35);
+
+    Angle angle4(0, 45000);
+
+
+    cout << "Angle 1: " <<angle1.toString() << endl;
+
+    angle1.decrease(angle2);
+
+    cout << "Angle 1 after decrease on Angle2: " <<angle1.toString() << endl;
+
+    angle1.normalize();
+
+    cout << "Angle 1 normalize: " << angle1.toString() << endl;
+
+    cout << endl;
+
+
+    // normalize() ПРИМЕНЯЕТСЯ ЕЩЕ И В КОНСТРУКТОРЕ     (ЗАКОМЕНТИЛ В КОНСТРУКТОРЕ)
+
+
+    cout << "Angle 3: " <<angle3.toString() << endl;
+    angle3.normalize();
+    cout << "Angle 3 after normalize: " <<angle3.toString() << endl;
+
+    cout << endl;
+    angle4.toDegrees();
+    cout << "Angle 4: " <<angle4.toString() << endl;
+    angle4.normalize();
+    cout << "Angle 4 after normalize: " << angle4.toString() << endl;
+
+
+    return 0;
+}
