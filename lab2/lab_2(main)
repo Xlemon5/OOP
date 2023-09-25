@@ -1,0 +1,62 @@
+#include <iostream>
+#include "library.h"
+using namespace std;
+
+// СПРОСИТЬ ПРО ПУНКТ 5 - ПЕРЕГРУЖЕННЫЕ ОПЕРАЦИИ СРАВНЕНИЯ
+// ЧТО ДЕЛАТЬ ДЛЯ МАТРИЦ?
+
+int main()
+{
+    //Матрица А
+    int sizeA = 0;
+    cout << "Введите размерность матрицы A: " << endl;
+    cin >> sizeA;
+
+    Matrix matrA(sizeA);
+    cin >> matrA;
+
+    cout << endl;
+    cout << matrA;
+
+    cout << endl;
+    //Матрица B
+
+    int sizeB = 0;
+    cout << "Введите размерность матрицы B: " << endl;
+    cin >> sizeB;
+
+    Matrix matrB(sizeB);
+    cin >> matrB;
+
+    cout << endl;
+
+    cout <<"Матрица B:"<< endl;
+    cout << matrB;
+
+    cout << endl;
+    //Матрица С
+    Matrix matrC = matrA + matrB;
+    cout << "Матрица C" << endl;
+    cout << matrC;
+    cout << endl;
+
+
+    /*
+    Matrix matCopy(matr);
+    cout << endl;
+    cout << "Скопированная матрица: "<<endl;
+    matCopy.printMatrix();
+    */
+
+    /*
+    //проверим на изменение элемента в матрице с которой скопировали значение
+    //все отработало нормально!!!
+
+    matr.setElement(0, 0, 10);
+
+    cout << endl;
+    matCopy.printMatrix();
+    */
+
+    return 0;
+}
