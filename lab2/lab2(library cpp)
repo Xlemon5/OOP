@@ -1,0 +1,282 @@
+#include "library.h"
+#include <iostream>
+#include <iomanip>
+
+using namespace std;
+
+Matrix::Matrix(int _size)
+{
+    size = _size;
+    mtr = new int * [size];
+    for(int i = 0; i < size; i++)
+    {
+        mtr[i] = new int[size];
+        for(int j = 0; j < size; j++)
+        {
+            mtr[i][j] = 0;
+        }
+    }
+}
+
+//КОНСТРУКТОР КОПИРОВАНИЯ
+Matrix::Matrix(const Matrix &other)
+{
+    size = other.size;
+    mtr = new int*[size];
+
+    for(int i = 0; i < size; i++)
+    {
+        mtr[i] = new int[size];
+        for(int j = 0; j < size; j++)
+        {
+            mtr[i][j] = other.mtr[i][j];
+        }
+    }
+
+}
+
+//ДЕСТРУКТОР
+Matrix::~Matrix()
+{
+    for(int i = 0; i < size; i++)
+    {
+        delete[] mtr[i];
+    }
+    delete[] mtr;
+}
+
+//ГЕТТЕР ДЛЯ РАЗМЕРНОСТИ
+int Matrix::getSize()
+{
+    return size;
+}
+
+//СЕТТЕР И ГЕТТЕР ДЛЯ ПОЛУЧЕНИЯ ЭЛЕМЕНТА
+void Matrix::setElement(int row, int col, int value)
+{
+    if (row >= 0 && row < size && col >= 0 && col < size)
+    {
+        mtr[row][col] = value;
+    }
+}
+
+int Matrix::getElement(int row, int col)
+{
+    if (row >= 0 && row < size && col >= 0 && col < size)
+    {
+        return mtr[row][col];
+    }
+    return 0;
+}
+
+//РЕСАЙЗ
+void Matrix::resize(int newSize)
+{
+    if (newSize <= size) {
+        return; // Новый размер не может быть меньше или равен текущему размеру
+    }
+
+    int** newMatrix = new int*[newSize];
+    for (int i = 0; i < newSize; ++i) {
+        newMatrix[i] = new int[newSize];
+        for (int j = 0; j < newSize; ++j) {
+            if (i < size && j < size) {
+                newMatrix[i][j] = mtr[i][j];
+            } else {
+                newMatrix[i][j] = 0; // Заполняем нулями, если вне границы старой матрицы
+            }
+        }
+    }
+
+    // Удаляем старую матрицу и обновляем размер
+    for (int i = 0; i < size; ++i) {
+        delete[] mtr[i];
+    }
+    delete[] mtr;
+
+    mtr = newMatrix;
+    size = newSize;
+}
+
+//ВВОД С КЛАВИАТУРЫ
+void Matrix::inputMatrix()
+{
+    cout << "Введите значения: " << endl;
+    for(int i = 0; i < size; i++)
+    {
+        for(int j = 0; j < size; j++)
+        {
+            cin >> mtr[i][j];
+        }
+    }
+}
+
+//ПЕЧАТЬ МАТРИЦЫ
+void Matrix::printMatrix()
+{
+    cout << "Matrix: " << endl;
+    for(int i = 0; i < size; i++)
+    {
+        for(int j = 0; j < size; j++)
+        {
+            cout << setw(4) << mtr[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
+
+
+//ПЕРЕГРУЗКА АРИФМЕТИЧЕСКИХ ОПЕРАЦИЙ
+//перегрузка сложения (+)
+Matrix Matrix::operator+(const Matrix &other)
+{
+    Matrix otherCopy = Matrix(other);
+
+    int newSize = (size > other.size) ? size : other.size;
+
+    if(size > otherCopy.size)
+    {
+        otherCopy.resize(size);
+    }
+    else
+    {
+        this->resize(otherCopy.size);
+    }
+
+    Matrix result = Matrix(newSize);
+
+    for(int i = 0; i < newSize; i++)
+    {
+        for(int j = 0; j < newSize; j++)
+        {
+            result.mtr[i][j] = mtr[i][j] + otherCopy.mtr[i][j];
+        }
+    }
+
+    return result;
+}
+
+//перегрузка вычитания (-)
+Matrix Matrix::operator-(const Matrix &other)
+{
+    Matrix otherCopy = Matrix(other);
+
+    int newSize = (size > other.size) ? size : other.size;
+
+    if(size > otherCopy.size)
+    {
+        otherCopy.resize(size);
+    }
+    else
+    {
+        this->resize(otherCopy.size);
+    }
+
+    Matrix result = Matrix(newSize);
+
+    for(int i = 0; i < newSize; i++)
+    {
+        for(int j = 0; j < newSize; j++)
+        {
+            result.mtr[i][j] = mtr[i][j] - otherCopy.mtr[i][j];
+        }
+    }
+
+    return result;
+}
+
+//перегрузкка умножения (*)
+Matrix Matrix::operator*(const Matrix &other)
+{
+    Matrix otherCopy = Matrix(other);
+
+    int newSize = (size > other.size) ? size : other.size;
+
+    if(size > otherCopy.size)
+    {
+        otherCopy.resize(size);
+    }
+    else
+    {
+        this->resize(otherCopy.size);
+    }
+
+    Matrix result = Matrix(newSize);
+
+    for(int i = 0; i < newSize; i++)
+    {
+        for(int j = 0; j < newSize; j++)
+        {
+            result.mtr[i][j] = 0;
+            for(int k = 0; k < newSize; k++)
+            {
+                result.mtr[i][j] += mtr[i][k] * otherCopy.mtr[k][j];
+            }
+        }
+    }
+    return result;
+}
+
+//ПЕРЕГРУЗКА ОПЕРАТОРА ПРИСВАИВАНИЯ
+Matrix Matrix::operator=(const Matrix &other)
+{
+    //ПРОВЕРКА, ЧТО ЭТО НЕ ПЕРЕПРИСВАИВАНИЕ САМОМУ СЕБЕ
+    if(this == &other)
+    {
+        return *this;
+    }
+
+    //ОСВОБОЖДАЕМ ТЕКУЩУЮ ПАМЯТЬ
+    for(int i = 0; i < size; i++)
+    {
+        delete[] mtr[i];
+    }
+    delete[] mtr;
+
+    //ПЕРЕНОСИМ(КОПИРУЕМ)
+    size = other.size;
+    mtr = new int* [size];
+    for(int i = 0; i < size; i++)
+    {
+        mtr[i] = new int [size];
+        for(int j = 0; j < size; j++)
+        {
+            mtr[i][j] = other.mtr[i][j];
+        }
+    }
+    return *this;
+}
+
+
+//ПЕРЕГРУЗКА ОПЕРАТОРОВ << и >>
+
+//ВЫВОД
+std::ostream& operator<<(std::ostream& out, const Matrix& matrix)
+{
+    out << "Matrix: " << std::endl;
+    for(int i = 0; i < matrix.size; i++)
+    {
+        for(int j = 0; j < matrix.size; j++)
+        {
+            out << setw(3) <<matrix.mtr[i][j] << " ";
+        }
+        out << std::endl;
+    }
+    return out;
+}
+
+//ВВОД
+std::istream& operator>>(std::istream& in, Matrix& matrix)
+{
+    std::cout << "Введите значения: " << std::endl;
+    for(int i = 0; i < matrix.size; i++)
+    {
+        for(int j = 0; j < matrix.size; j++)
+        {
+            in >> matrix.mtr[i][j];
+        }
+    }
+    return in;
+}
+
