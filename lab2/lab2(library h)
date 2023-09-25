@@ -1,0 +1,60 @@
+#ifndef LAB2_LIBRARY_H
+#define LAB2_LIBRARY_H
+#include <string>
+#include <iomanip>
+
+class Matrix{
+private:
+    int** mtr;
+    int size;
+public:
+    //КОНСТРУКТОР
+    Matrix(int _size);
+
+    //КОНСТРУКТОР КОПИРОВАНИЯ
+    Matrix(const Matrix &other);
+
+    //ДЕСТРУКТОР
+    ~Matrix();
+
+    //ГЕТТЕР ДЛЯ РАЗМЕРНОСТИ
+    int getSize();
+
+    //СЕТТЕР И ГЕТТЕР ДЛЯ ПОЛУЧЕНИЯ ЭЛЕМЕНТА
+    void setElement(int row, int col, int value);
+
+    int getElement(int row, int col);
+
+    //РЕСАЙЗ
+    void resize(int newSize);
+
+    //ВВОД С КЛАВИАТУРЫ
+    void inputMatrix();
+
+    //ПЕЧАТЬ МАТРИЦЫ
+    void printMatrix();
+
+    //ПЕРЕГРУЗКА АРИФМЕТИЧЕСКИХ ОПЕРАЦИЙ
+    //перегрузка сложения (+)
+    Matrix operator+(const Matrix &other);
+
+    //перегрузка вычитания (-)
+    Matrix operator-(const Matrix &other);
+
+    //перегрузкка умножения (*)
+    Matrix operator*(const Matrix &other);
+
+    //ПЕРЕГРУЗКА ОПЕРАТОРА ПРИСВАИВАНИЯ
+    Matrix operator=(const Matrix &other);
+
+
+    //ПЕРЕГРУЗКА ОПЕРАТОРОВ << и >>
+
+    friend std::ostream& operator<<(std::ostream& out, const Matrix& matrix);
+
+    friend std::istream& operator>>(std::istream& in, Matrix& matrix);
+};
+
+
+
+#endif //LAB2_LIBRARY_H
