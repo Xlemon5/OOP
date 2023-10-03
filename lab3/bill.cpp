@@ -1,5 +1,6 @@
 #include "bill.h"
 #include "Time.h"
+#include <cmath>
 using namespace std;
 
 //конструктор

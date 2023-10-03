@@ -5,6 +5,7 @@
 #include <string>
 #include <iomanip>
 #include "Time.h"
+#include <cmath>
 
 class Bill{
 private:
