@@ -3,4 +3,8 @@ project(lab4)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(lab4 main.cpp)
+add_executable(lab4 main.cpp
+        Pair.h
+        Pair.cpp
+        Rational.h
+        Rational.cpp)
