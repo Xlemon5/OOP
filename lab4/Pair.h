@@ -32,9 +32,9 @@ public:
     int getB();
 
     //СЕТТЕРЫ
-    int setA(int A);
+    void setA(int A);
 
-    int setB(int B);
+    void setB(int B);
 
     //ОПЕРАТОР ПРИСВАИВАНИЯ
     Pair& operator=(const Pair& other);
