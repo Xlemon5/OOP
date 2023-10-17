@@ -11,22 +11,20 @@ public:
     int b;
 
     //конструкторы
-    Pair();
+    Pair(int x = 0, int y = 0);
 
-    Pair(int _a, int _b);
+
+    Pair operator * (const Pair &other) const;
+
+    Pair operator - (const Pair &other) const;
+
+    Pair operator + (const Pair &other) const;
+
 
     // проверка на равенство
     bool operator == (const Pair &other) const;
 
-
-    //перемножение полей
-    Pair operator * (const Pair &other) const;
-
-    //вычитание пар
-    Pair operator - (const Pair &other) const;
-
-    //печать
-    void printPair();
+    bool operator != (const Pair &other) const;
 
     //ГЕТТЕРЫ
     int getA();
@@ -44,11 +42,13 @@ public:
     //ОПЕРАТОР КОПИРОВАНИЯ
     Pair(const Pair&other);
 
+
     //перегрузка вывода
     friend std::ostream& operator<<(std::ostream &out, const Pair& other);
 
     //перегрузка ввода
     friend std::istream& operator >> (std::istream& in, Pair &other);
+
 
 };
 

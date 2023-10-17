@@ -1,4 +1,4 @@
-#include <iostream>
+//#include <iostream>
 #include "Pair.h"
 #include "Rational.h"
 using namespace std;
@@ -16,14 +16,15 @@ int main() {
     cout << "Введите p2:" << endl;
     cin >> p2;
 
+    cout << p2 << endl;
 
-    // ОТВЕТ ПРАВИЛЬНЫЙ (НЕ СТАНДАРТНАЯ РЕАЛИЗАЦИЯ ПО ФОРМУЛЕ ИЗ УЧЕБНИКА)
-    // РЕЗУЛЬТАТ ВЫРАЖЕНИЯ - НОВАЯ ПАРА
+/*    // РЕЗУЛЬТАТ ВЫРАЖЕНИЯ - НОВАЯ ПАРА
     cout << "Вычитание (p1 - p2): " << endl;
     cout << p1 - p2 << endl;
 
+    cout << "Сложение (p1 + p2): " << endl;
+    cout << p1 + p2 << endl;
 
-    // ЗДЕСЬ УЖЕ ВСЕ ПО НОРМАЛЬНОМУ
     cout << "Умножение (p1 * p2): " << endl;
     cout << p1 * p2 << endl;
 
@@ -35,15 +36,15 @@ int main() {
     else
     {
         cout << "Пары не равны!" << endl;
-    }
+    }*/
 
 
 
+/*
     //ТЕПЕРЬ РАБОТАЕМ С Rational
     cout << endl;
     cout << "ТЕПЕРЬ РАБОТАЕМ С Rational:" << endl;
     cout << endl;
-
 
     Rational r1;
     Rational r2;
@@ -57,13 +58,12 @@ int main() {
     cout << "Новая операция сложения (r1 + r2): " << endl;
     cout << r1 + r2 << endl;
 
-
     cout << "Переопределенная операция вычитания (r1 - r2): " << endl;
     cout << r1 - r2 << endl;
 
     cout << "Новая операция деления (r1 / r2): " << endl;
     cout << r1 / r2 << endl;
-
+*/
 
 
 

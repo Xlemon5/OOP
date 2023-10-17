@@ -1,23 +1,20 @@
 #include "Pair.h"
-#include <iostream>
+// #include <iostream>
 using namespace std;
 
     //конструкторы
 
-    Pair::Pair(): a(0), b(0){}
+    Pair::Pair(int x, int y): a(x), b(y){}
 
-    Pair::Pair(int _a, int _b): a(_a), b(_b){}
-
-
-    // проверка на равенство
-    bool Pair::operator == (const Pair &other) const
-    {
-        return (a == other.a) && (b == other.b);
-    }
 
     //перемножение полей
     Pair Pair::operator * (const Pair &other) const {
         return Pair(a * other.a, b * other.b);
+    }
+
+    Pair Pair::operator + (const Pair &other) const
+    {
+        return Pair(a + other.a, b + other.b);
     }
 
     //вычитание пар
@@ -26,11 +23,6 @@ using namespace std;
         return Pair(a - b, other.a - other.b);
     }
 
-    //печать
-    void Pair::printPair()
-    {
-        cout << "(" << a <<", " << b << ")" << endl;
-    }
 
     //ГЕТТЕРЫ
     int Pair::getA(){
@@ -41,7 +33,6 @@ using namespace std;
         return b;
     }
 
-
     //СЕТТЕРЫ
     int Pair::setA(int A){
         a = A;
@@ -51,8 +42,20 @@ using namespace std;
         b = B;
     }
 
+
+    // проверка на равенство
+    bool Pair::operator == (const Pair &other) const
+    {
+        return (a == other.a) && (b == other.b);
+    }
+
+    bool Pair::operator != (const Pair &other) const
+    {
+        return (a != other.a) || (b != other.b);
+    }
+
     //ОПЕРАТОР ПРИСВАИВАНИЯ
-    Pair& Pair::operator=(const Pair& other){
+    Pair& Pair::operator =(const Pair& other){
         a = other.a;
         b = other.b;
 
@@ -66,15 +69,18 @@ using namespace std;
     }
 
     //перегрузка вывода
-    std::ostream& operator<<(std::ostream &out, const Pair& other)
+    std::ostream& operator <<(std::ostream &out, const Pair& other)
     {
         out << "(" << other.a <<", " << other.b << ")" << endl;
         return out;
     }
 
+
     //перегрузка ввода
-    std::istream& operator >> (std::istream& in, Pair &other)
-    {
-        in >> other.a >> other.b;
-        return in;
-    }
+    istream& operator >>(istream& in, const Pair &other);
+
+istream &operator>>(istream &in, const Pair &other)
+{
+    in >> other.a >> other.b;
+    return in;
+}
