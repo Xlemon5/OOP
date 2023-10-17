@@ -34,11 +34,11 @@ using namespace std;
     }
 
     //СЕТТЕРЫ
-    int Pair::setA(int A){
+    void Pair::setA(int A){
         a = A;
     }
 
-    int Pair::setB(int B){
+    void Pair::setB(int B){
         b = B;
     }
 
