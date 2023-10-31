@@ -1,85 +1,88 @@
 #include "Pair.h"
-// #include <iostream>
 using namespace std;
 
-    //конструкторы
+Pair::Pair() : a(0), b(0) {}
+Pair::Pair(int x, int y) : a(x), b(y) {}
 
-    Pair::Pair(int x, int y): a(x), b(y){}
+int Pair::getA()
+{
+    return a;
+}
 
+int Pair::getB()
+{
+    return b;
+}
 
-    //перемножение полей
-    Pair Pair::operator * (const Pair &other) const {
-        return Pair(a * other.a, b * other.b);
-    }
+void Pair::setA(int A)
+{
+    a = A;
+}
 
-    Pair Pair::operator + (const Pair &other) const
-    {
-        return Pair(a + other.a, b + other.b);
-    }
+void Pair::setB(int B)
+{
+    b = B;
+}
 
-    //вычитание пар
-    Pair Pair::operator - (const Pair &other) const
-    {
-        return Pair(a - b, other.a - other.b);
-    }
+Pair& Pair::operator =(const Pair& other)
+{
+    a = other.a;
+    b = other.b;
 
+    return *this;
+}
 
-    //ГЕТТЕРЫ
-    int Pair::getA(){
-        return a;
-    }
+Pair::Pair(const Pair& other)
+{
+    a = other.a;
+    b = other.b;
+}
 
-    int Pair::getB(){
-        return b;
-    }
+bool Pair::operator ==(const Pair& other)
+{
+    return a == other.a && b == other.b;
+}
 
-    //СЕТТЕРЫ
-    void Pair::setA(int A){
-        a = A;
-    }
+bool Pair::operator !=(const Pair& other)
+{
+    return (a != other.a) || (b != other.b);
+}
 
-    void Pair::setB(int B){
-        b = B;
-    }
+Pair* Pair::operator +(Pair& other)
+{
+    Pair* newPair = new Pair(a + other.a, b + other.b);
 
+    return newPair;
+}
 
-    // проверка на равенство
-    bool Pair::operator == (const Pair &other) const
-    {
-        return (a == other.a) && (b == other.b);
-    }
+Pair* Pair::operator -(Pair& other)
+{
+    Pair* newPair = new Pair(a - other.a, b - other.b);
 
-    bool Pair::operator != (const Pair &other) const
-    {
-        return (a != other.a) || (b != other.b);
-    }
+    return newPair;
+}
 
-    //ОПЕРАТОР ПРИСВАИВАНИЯ
-    Pair& Pair::operator =(const Pair& other){
-        a = other.a;
-        b = other.b;
+Pair* Pair::operator /(Pair& other)
+{
+    Pair* newPair = new Pair(a / other.a, b / other.b);
 
-        return *this;
-    }
+    return newPair;
+}
 
-    //ОПЕРАТОР КОПИРОВАНИЯ
-    Pair::Pair(const Pair&other){
-        a = other.a;
-        b = other.b;
-    }
+Pair* Pair::operator *(Pair& other)
+{
+    Pair* newPair = new Pair(a * other.a, b * other.b);
 
-    //перегрузка вывода
-    std::ostream& operator <<(std::ostream &out, const Pair& other)
-    {
-        out << "(" << other.a <<", " << other.b << ")" << endl;
-        return out;
-    }
+    return newPair;
+}
 
+ostream& operator << (ostream& out, const Pair& other)
+{
+    out << "(" << other.a << ", " << other.b << ")" << endl;
+    return out;
+}
 
-    //перегрузка ввода
-    istream& operator >>(istream& in, const Pair &other);
-
-istream &operator>>(istream &in, const Pair &other)
+istream& operator >> (istream& in, Pair& other)
 {
     in >> other.a >> other.b;
     return in;
