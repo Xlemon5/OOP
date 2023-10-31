@@ -1,41 +1,40 @@
-#ifndef LAB4_RATIONAL_H
-#define LAB4_RATIONAL_H
+#ifndef LAB4_NEW_RATIONAL_H
+#define LAB4_NEW_RATIONAL_H
 
-//#include <iostream>
+
+#include <iostream>
 #include "Pair.h"
 using namespace std;
 
 
+class Rational : public Pair {
 
-
-class Rational:public Pair{
 public:
+	Rational();
 
-    //КОНСТРУКТОРЫ
+	Rational(int x, int y = 1);
 
-    Rational(int x = 0, int y = 1);
+	int findNOD(int a, int b);
 
+	void normalize();
 
-    //ОПЕРАЦИЯ СЛОЖЕНИЯ
-    Rational operator +(const Rational &other) const;
+	Rational* operator +( Rational& other);
 
-    Rational operator -(const Rational &other) const;
+	Rational* operator -( Rational& other);
 
-    //ОПЕРАЦИЯ ДЕЛЕНИЯ
-    Rational operator /(const Rational &other) const;
+	Rational* operator /( Rational& other);
 
+    Rational* operator *( Rational& other);
 
-    bool operator > (const Pair &other) const;
+	bool operator > (const Rational& other) const;
 
-    bool operator < (const Pair &other) const;
-
-
-    //перегрузка вывода
+	bool operator < (const Rational& other) const;
 
 
+	friend ostream& operator << (ostream& out, const Rational& other);
+
+	friend istream& operator >> (istream& in, Rational& other);
 
 };
 
-
-
-#endif //LAB4_RATIONAL_H
+#endif //LAB4_NEW_RATIONAL_H
