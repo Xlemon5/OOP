@@ -1,0 +1,35 @@
+// Шаблон очереди с параметром-шаблоном
+template <template <typename> class QueueType, typename ItemType>
+class Queue {
+private:
+    QueueType<ItemType> queue;
+
+public:
+    // Методы для добавления и удаления элементов в очередь
+    void enqueue(const ItemType& value) {
+        queue.push_back(value);
+    }
+
+    void dequeue() {
+        if (!empty()) {
+            queue.pop_front();
+        }
+    }
+
+    bool empty() const {
+        return queue.empty();
+    }
+
+    // Дружественные операции ввода и вывода как внешние функции-шаблоны
+    friend std::ostream& operator<<(std::ostream& os, const Queue& q) {
+        os << q.queue;
+        return os;
+    }
+
+    friend std::istream& operator>>(std::istream& is, Queue& q) {
+        ItemType value;
+        is >> value;
+        q.enqueue(value);
+        return is;
+    }
+};
