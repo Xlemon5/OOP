@@ -1,3 +1,15 @@
+// не работает так как у шаблона списка по другому называются методы 
+
+/*
+Серьезность	Код	Описание	Проект	Файл	Строка	Состояние подавления
+Ошибка	C2660	List<ItemType>::pop_front: функция не принимает 0 аргументов	Project1	C:\Users\Илья\Desktop\oop_test\lab6\Project1\Source.cpp	208	
+
+*/
+
+
+
+
+
 // Шаблон очереди с параметром-шаблоном
 template <template <typename> class QueueType, typename ItemType>
 class Queue {
