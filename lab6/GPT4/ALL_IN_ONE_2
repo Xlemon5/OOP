@@ -1,0 +1,153 @@
+#include <iostream>
+
+template<typename T>
+class Node {
+public:
+    T data;
+    Node* next;
+    Node* prev;
+
+    Node(T data) : data(data), next(nullptr), prev(nullptr) {}
+};
+
+template <typename T>
+class Deque {
+private:
+    Node<T>* head;
+    Node<T>* tail;
+    size_t size;
+
+public:
+    Deque() : head(nullptr), tail(nullptr), size(0) {}
+
+    void push_back(const T& value) {
+        Node<T>* newNode = new Node<T>(value);
+        if (!size) {
+            head = tail = newNode;
+        }
+        else {
+            tail->next = newNode;
+            newNode->prev = tail;
+            tail = newNode;
+        }
+        size++;
+    }
+
+    void pop_front() {
+        if (!size) return;
+        Node<T>* temp = head;
+        if (head == tail) {
+            head = tail = nullptr;
+        }
+        else {
+            head = head->next;
+            head->prev = nullptr;
+        }
+        delete temp;
+        size--;
+    }
+
+    T& front() {
+        return head->data;
+    }
+
+    bool empty() const {
+        return size == 0;
+    }
+};
+
+template <typename T>
+class LinkedList {
+private:
+    Node<T>* head;
+    Node<T>* tail;
+    size_t size;
+
+public:
+    LinkedList() : head(nullptr), tail(nullptr), size(0) {}
+
+    void push_back(const T& value) {
+        Node<T>* newNode = new Node<T>(value);
+        if (!size) {
+            head = tail = newNode;
+        }
+        else {
+            tail->next = newNode;
+            newNode->prev = tail;
+            tail = newNode;
+        }
+        size++;
+    }
+
+    void pop_front() {
+        if (!size) return;
+        Node<T>* temp = head;
+        if (head == tail) {
+            head = tail = nullptr;
+        }
+        else {
+            head = head->next;
+            head->prev = nullptr;
+        }
+        delete temp;
+        size--;
+    }
+
+    T& front() {
+        return head->data;
+    }
+
+    bool empty() const {
+        return size == 0;
+    }
+};
+
+template <template <typename> class Container, typename T>
+class Queue {
+private:
+    Container<T> container;
+
+public:
+    void enqueue(const T& value) {
+        container.push_back(value);
+    }
+
+    void dequeue() {
+        container.pop_front();
+    }
+
+    T& peek() {
+        return container.front();
+    }
+
+    bool empty() const {
+        return container.empty();
+    }
+};
+
+int main() {
+    Queue<Deque, int> dequeQueue;
+    Queue<LinkedList, int> listQueue;
+
+    dequeQueue.enqueue(1);
+    dequeQueue.enqueue(2);
+
+    listQueue.enqueue(3);
+    listQueue.enqueue(4);
+
+    std::cout << "Deque-based Queue:" << std::endl;
+    while (!dequeQueue.empty()) {
+        std::cout << dequeQueue.peek() << " ";
+        dequeQueue.dequeue();
+    }
+    std::cout << std::endl;
+
+    std::cout << "Linked List-based Queue:" << std::endl;
+    while (!listQueue.empty()) {
+        std::cout << listQueue.peek() << " ";
+        listQueue.dequeue();
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
