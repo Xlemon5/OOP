@@ -1,0 +1,87 @@
+// Шаблон списка
+template <typename T>
+class List {
+private:
+    struct Node {
+        T data;
+        Node* next;
+    };
+
+    Node* head;
+
+public:
+    List() : head(nullptr) {}
+
+    class Iterator {
+    private:
+        Node* current;
+
+    public:
+        Iterator(Node* node) : current(node) {}
+
+        T& operator*() {
+            return current->data;
+        }
+
+        Iterator& operator++() {
+            if (current) {
+                current = current->next;
+            }
+            return *this;
+        }
+
+        bool operator!=(const Iterator& other) {
+            return current != other.current;
+        }
+
+        friend class List;
+    };
+
+    void insert(const T& value, Iterator position) {
+        Node* newNode = new Node{ value, nullptr };
+        if (position.current) {
+            newNode->next = position.current->next;
+            position.current->next = newNode;
+        }
+        else {
+            newNode->next = head;
+            head = newNode;
+        }
+    }
+
+    void erase(Iterator position) {
+        if (!position.current) {
+            return;
+        }
+
+        if (position.current == head) {
+            head = position.current->next;
+            delete position.current;
+        }
+        else {
+            Iterator prev = begin();
+            while (prev.current && prev.current->next != position.current) {
+                ++prev;
+            }
+            if (prev.current) {
+                prev.current->next = position.current->next;
+                delete position.current;
+            }
+        }
+    }
+
+    Iterator begin() {
+        return Iterator(head);
+    }
+
+    Iterator end() {
+        return Iterator(nullptr);
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const List& list) {
+        for (Iterator it = list.begin(); it != list.end(); ++it) {
+            os << *it << " ";
+        }
+        return os;
+    }
+};
