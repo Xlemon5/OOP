@@ -1,0 +1,192 @@
+#include <iostream>
+
+template <typename T>
+class Deque {
+    struct Node {
+        T data;
+        Node* next;
+        Node* prev;
+        Node(const T& value) : data(value), next(nullptr), prev(nullptr) {}
+    };
+    Node* head;
+    Node* tail;
+public:
+    Deque() : head(nullptr), tail(nullptr) {}
+
+    class iterator {
+        Node* current;
+    public:
+        iterator(Node* node) : current(node) {}
+        iterator& operator++() {
+            current = current->next;
+            return *this;
+        }
+        T& operator*() {
+            return current->data;
+        }
+        bool operator!=(const iterator& other) const {
+            return current != other.current;
+        }
+    };
+
+    void push_back(const T& value) {
+        Node* newNode = new Node(value);
+        if (!tail) {
+            head = tail = newNode;
+        }
+        else {
+            tail->next = newNode;
+            newNode->prev = tail;
+            tail = newNode;
+        }
+    }
+    void pop_front() {
+        if (!head) return;
+        Node* temp = head;
+        head = head->next;
+        if (head) head->prev = nullptr;
+        else tail = nullptr;
+        delete temp;
+    }
+    T& front() const {
+        return head->data;
+    }
+    bool empty() const {
+        return head == nullptr;
+    }
+    ~Deque() {
+        while (head) {
+            Node* temp = head;
+            head = head->next;
+            delete temp;
+        }
+    }
+    iterator begin() {
+        return iterator(head);
+    }
+    iterator end() {
+        return iterator(nullptr);
+    }
+};
+
+template <typename T>
+class List {
+    struct Node {
+        T data;
+        Node* next;
+        Node(const T& value) : data(value), next(nullptr) {}
+    };
+    Node* head;
+    Node* tail;
+public:
+    List() : head(nullptr), tail(nullptr) {}
+
+    class iterator {
+        Node* current;
+    public:
+        iterator(Node* node) : current(node) {}
+        iterator& operator++() {
+            current = current->next;
+            return *this;
+        }
+        T& operator*() {
+            return current->data;
+        }
+        bool operator!=(const iterator& other) const {
+            return current != other.current;
+        }
+    };
+
+    void push_back(const T& value) {
+        Node* newNode = new Node(value);
+        if (!tail) {
+            head = tail = newNode;
+        }
+        else {
+            tail->next = newNode;
+            tail = newNode;
+        }
+    }
+    void pop_front() {
+        if (!head) return;
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+        if (!head) tail = nullptr;
+    }
+    T& front() const {
+        return head->data;
+    }
+    bool empty() const {
+        return head == nullptr;
+    }
+    ~List() {
+        while (head) {
+            Node* temp = head;
+            head = head->next;
+            delete temp;
+        }
+    }
+    iterator begin() {
+        return iterator(head);
+    }
+    iterator end() {
+        return iterator(nullptr);
+    }
+};
+
+template <template <typename> class Container, typename T>
+class Queue {
+    Container<T> container;
+public:
+    void enqueue(const T& value) {
+        container.push_back(value);
+    }
+    void dequeue() {
+        container.pop_front();
+    }
+    T& peek() const {
+        return container.front();
+    }
+    bool empty() const {
+        return container.empty();
+    }
+};
+
+int main() {
+    Queue<Deque, int> queue1;
+    queue1.enqueue(1);
+    queue1.enqueue(2);
+    queue1.enqueue(3);
+    std::cout << "Queue (Deque) front: " << queue1.peek() << std::endl;
+    queue1.dequeue();
+    std::cout << "After dequeue: " << queue1.peek() << std::endl;
+
+    Queue<List, int> queue2;
+    queue2.enqueue(10);
+    queue2.enqueue(20);
+    queue2.enqueue(30);
+    std::cout << "Queue (List) front: " << queue2.peek() << std::endl;
+    queue2.dequeue();
+    std::cout << "After dequeue: " << queue2.peek() << std::endl;
+
+    Deque<int> deque;
+    deque.push_back(1);
+    deque.push_back(2);
+    deque.push_back(3);
+    for (int value : deque) {
+        std::cout << value << " ";
+    }
+    std::cout << std::endl;
+
+    List<int> list;
+    list.push_back(10);
+    list.push_back(20);
+    list.push_back(30);
+    for (int value : list) {
+        std::cout << value << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
