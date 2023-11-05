@@ -1,5 +1,6 @@
 #include <iostream>
 
+// Шаблон двусторонней очереди
 template <typename T>
 class Deque {
 private:
@@ -7,9 +8,6 @@ private:
         T data;
         Node* next;
         Node* prev;
-
-        Node(const T& value, Node* nextNode = nullptr, Node* prevNode = nullptr)
-            : data(value), next(nextNode), prev(prevNode) {}
     };
 
     Node* front;
@@ -18,9 +16,8 @@ private:
 public:
     Deque() : front(nullptr), back(nullptr) {}
 
-    // Методы для добавления элементов в начало и конец очереди
     void push_front(const T& value) {
-        Node* newNode = new Node( value, nullptr, nullptr );
+        Node* newNode = new Node{ value, nullptr, nullptr };
         if (empty()) {
             front = back = newNode;
         }
@@ -31,19 +28,6 @@ public:
         }
     }
 
-    void push_back(const T& value) {
-        Node* newNode = new Node( value, nullptr, nullptr );
-        if (empty()) {
-            front = back = newNode;
-        }
-        else {
-            newNode->prev = back;
-            back->next = newNode;
-            back = newNode;
-        }
-    }
-
-    // Методы для удаления элементов с начала и конца очереди
     void pop_front() {
         if (!empty()) {
             Node* temp = front;
@@ -55,6 +39,18 @@ public:
                 back = nullptr;
             }
             delete temp;
+        }
+    }
+
+    void push_back(const T& value) {
+        Node* newNode = new Node{ value, nullptr, nullptr };
+        if (empty()) {
+            front = back = newNode;
+        }
+        else {
+            newNode->prev = back;
+            back->next = newNode;
+            back = newNode;
         }
     }
 
@@ -76,88 +72,156 @@ public:
         return front == nullptr;
     }
 
-    // Дружественные операции ввода и вывода как внешние функции-шаблоны
     friend std::ostream& operator<<(std::ostream& os, const Deque& deque) {
-        typename Deque<T>::Node* current = deque.front;
+        Node* current = deque.front;
         while (current) {
             os << current->data << " ";
             current = current->next;
         }
         return os;
     }
-
-    friend std::istream& operator>>(std::istream& is, Deque& deque) {
-        T value;
-        is >> value;
-        deque.push_back(value);
-        return is;
-    }
 };
 
 
 
-
-
-
-
-
-
-// Шаблон очереди с параметром-шаблоном
-template <template <typename> class QueueType, typename ItemType>
-class Queue {
+// Шаблон списка
+template <typename T>
+class List {
 private:
-    QueueType<ItemType> queue;
+    struct Node {
+        T data;
+        Node* next;
+    };
+
+    Node* head;
 
 public:
-    // Методы для добавления и удаления элементов в очередь
-    void enqueue(const ItemType& value) {
+    List() : head(nullptr) {}
+
+    class Iterator {
+    private:
+        Node* current;
+
+    public:
+        Iterator(Node* node) : current(node) {}
+
+        T& operator*() {
+            return current->data;
+        }
+
+        Iterator& operator++() {
+            if (current) {
+                current = current->next;
+            }
+            return *this;
+        }
+
+        bool operator!=(const Iterator& other) {
+            return current != other.current;
+        }
+
+        friend class List;
+    };
+
+    void insert(const T& value, Iterator position) {
+        Node* newNode = new Node{ value, nullptr };
+        if (position.current) {
+            newNode->next = position.current->next;
+            position.current->next = newNode;
+        }
+        else {
+            newNode->next = head;
+            head = newNode;
+        }
+    }
+
+    void pop_front() {
+        if (head) {
+            Node* temp = head;
+            head = head->next;
+            delete temp;
+        }
+    }
+
+    Iterator begin() {
+        return Iterator(head);
+    }
+
+    Iterator end() {
+        return Iterator(nullptr);
+    }
+
+    bool empty() const {
+        return head == nullptr;
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const List& list) {
+        for (Iterator it = list.begin(); it != list.end(); ++it) {
+            os << *it << " ";
+        }
+        return os;
+    }
+};
+
+// Общий интерфейс для работы с разными реализациями очереди
+template <typename T>
+class QueueInterface {
+public:
+    virtual void enqueue(const T& value) = 0;
+    virtual void dequeue() = 0;
+    virtual bool empty() const = 0;
+    virtual ~QueueInterface() {}
+};
+
+// Шаблон очереди с параметром-шаблоном
+template <typename QueueType, typename ItemType>
+class Queue : public QueueInterface<ItemType> {
+private:
+    QueueType queue;
+
+public:
+    void enqueue(const ItemType& value) override {
         queue.push_back(value);
     }
 
-    void dequeue() {
+    void dequeue() override {
         if (!empty()) {
             queue.pop_front();
         }
     }
 
-    bool empty() const {
+    bool empty() const override {
         return queue.empty();
     }
 
-    // Дружественные операции ввода и вывода как внешние функции-шаблоны
     friend std::ostream& operator<<(std::ostream& os, const Queue& q) {
         os << q.queue;
         return os;
     }
-
-    friend std::istream& operator>>(std::istream& is, Queue& q) {
-        ItemType value;
-        is >> value;
-        q.enqueue(value);
-        return is;
-    }
 };
 
-
-
-
 int main() {
-    Queue<Deque, int> intQueue;
+    Queue<Deque<int>, int> intDequeQueue;
+    Queue<List<int>, int> intListQueue;
 
+    intDequeQueue.enqueue(1);
+    intDequeQueue.enqueue(2);
+    intDequeQueue.enqueue(3);
 
-    intQueue.enqueue(1);
-    intQueue.enqueue(2);
-    intQueue.enqueue(3);
+    intListQueue.enqueue(1);
+    intListQueue.enqueue(2);
+    intListQueue.enqueue(3);
 
+    std::cout << "intDequeQueue: " << intDequeQueue << std::endl;
+    std::cout << "intListQueue: " << intListQueue << std::endl;
 
+    std::cout << "Dequeue from intDequeQueue: ";
+    intDequeQueue.dequeue();
+    std::cout << intDequeQueue << std::endl;
 
-    std::cout << "intQueue: " << intQueue << std::endl;
-
-    std::cout << "Dequeue from intQueue: ";
-    intQueue.dequeue();
-    std::cout << intQueue << std::endl;
-
-
+    std::cout << "Dequeue from intListQueue: ";
+    intListQueue.dequeue();
+    std::cout << intListQueue << std::endl;
 
     return 0;
 }
